@@ -17,15 +17,15 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="PfY-4d-6I5">
-                                <rect key="frame" x="0.0" y="48" width="414" height="848"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="PfY-4d-6I5">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                                 <color key="backgroundColor" name="YP Background"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ImagesListCell" id="Q0H-LI-V9K" customClass="ImagesListCell" customModule="ImageFeed" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="50" width="414" height="162"/>
+                                        <rect key="frame" x="0.0" y="50" width="414" height="140"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Q0H-LI-V9K" id="p6Z-ij-Bda">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="162"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="140"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="99X-IA-Ywu" userLabel="Cell Image">
@@ -43,21 +43,21 @@
                                                     <color key="textColor" name="YP White"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wG8-gS-Is2" userLabel="Like Button">
-                                                    <rect key="frame" x="339" y="11" width="75" height="35"/>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wG8-gS-Is2" userLabel="Like Button">
+                                                    <rect key="frame" x="349" y="4" width="49" height="44"/>
                                                     <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                     <state key="normal" title=" " image="likeButtonOn"/>
                                                 </button>
                                             </subviews>
                                             <color key="backgroundColor" name="YP Black"/>
                                             <constraints>
-                                                <constraint firstItem="99X-IA-Ywu" firstAttribute="leading" secondItem="p6Z-ij-Bda" secondAttribute="leadingMargin" constant="16" id="4lf-UL-Z0y"/>
-                                                <constraint firstItem="99X-IA-Ywu" firstAttribute="top" secondItem="p6Z-ij-Bda" secondAttribute="topMargin" constant="4" id="DBb-6s-eO4"/>
+                                                <constraint firstItem="99X-IA-Ywu" firstAttribute="leading" secondItem="p6Z-ij-Bda" secondAttribute="leading" constant="16" id="4lf-UL-Z0y"/>
+                                                <constraint firstItem="99X-IA-Ywu" firstAttribute="top" secondItem="p6Z-ij-Bda" secondAttribute="top" constant="4" id="DBb-6s-eO4"/>
                                                 <constraint firstItem="99X-IA-Ywu" firstAttribute="bottom" secondItem="77z-Z0-1GQ" secondAttribute="bottom" constant="8" id="FzD-IF-BTA"/>
                                                 <constraint firstItem="99X-IA-Ywu" firstAttribute="trailing" secondItem="wG8-gS-Is2" secondAttribute="trailing" id="LvI-6c-EDF"/>
                                                 <constraint firstItem="99X-IA-Ywu" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="77z-Z0-1GQ" secondAttribute="trailing" constant="8" id="U9T-37-NLS"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="99X-IA-Ywu" secondAttribute="trailing" constant="16" id="hey-Ns-tNC"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="99X-IA-Ywu" secondAttribute="bottom" constant="4" id="roC-Vj-ymB"/>
+                                                <constraint firstAttribute="trailing" secondItem="99X-IA-Ywu" secondAttribute="trailing" constant="16" id="hey-Ns-tNC"/>
+                                                <constraint firstAttribute="bottom" secondItem="99X-IA-Ywu" secondAttribute="bottom" constant="4" id="roC-Vj-ymB"/>
                                                 <constraint firstItem="wG8-gS-Is2" firstAttribute="top" secondItem="99X-IA-Ywu" secondAttribute="top" id="wUh-Ek-fOL"/>
                                                 <constraint firstItem="77z-Z0-1GQ" firstAttribute="leading" secondItem="99X-IA-Ywu" secondAttribute="leading" constant="8" id="xHt-u6-wxf"/>
                                             </constraints>
@@ -74,7 +74,7 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" name="YP Black"/>
                         <constraints>
-                            <constraint firstItem="PfY-4d-6I5" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="BRX-Dz-6ia"/>
+                            <constraint firstAttribute="top" secondItem="PfY-4d-6I5" secondAttribute="top" id="BRX-Dz-6ia"/>
                             <constraint firstAttribute="trailing" secondItem="PfY-4d-6I5" secondAttribute="trailing" id="EqJ-4P-1V6"/>
                             <constraint firstItem="PfY-4d-6I5" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="FUA-6a-J9V"/>
                             <constraint firstItem="PfY-4d-6I5" firstAttribute="bottom" secondItem="8bC-Xf-vdC" secondAttribute="bottom" id="p9F-ax-uSo"/>
