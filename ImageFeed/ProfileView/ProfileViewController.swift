@@ -23,7 +23,7 @@ final class ProfileViewController: UIViewController {
         super.viewDidLoad()
         setProfileImage()
         setName()
-        setNickName()
+        setNickNameLabel()
         setDescription()
         setButton()
     }
@@ -33,8 +33,8 @@ final class ProfileViewController: UIViewController {
         view.addSubview(imageView)
         
         NSLayoutConstraint.activate([
-            imageView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
-            imageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor , constant: 52),
+            imageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            imageView.topAnchor.constraint(equalTo: view.topAnchor , constant: 76),
             imageView.heightAnchor.constraint(equalToConstant: 70),
             imageView.widthAnchor.constraint(equalToConstant: 70)
         ])
@@ -43,8 +43,8 @@ final class ProfileViewController: UIViewController {
     func setName() {
         nameLabel.text = "Екатерина Новикова"
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
-        nameLabel.font = UIFont.boldSystemFont(ofSize: 23)
-        nameLabel.textColor = .white
+        nameLabel.font = .systemFont(ofSize: 23, weight: .bold)
+        nameLabel.textColor = UIColor(named: "YP White")
         view.addSubview(nameLabel)
         
         NSLayoutConstraint.activate([
@@ -53,10 +53,10 @@ final class ProfileViewController: UIViewController {
         ])
     }
     
-    func setNickName() {
+    func setNickNameLabel() {
         nickNameLabel.text = "@ekaterina_nov"
         nickNameLabel.translatesAutoresizingMaskIntoConstraints = false
-        nickNameLabel.font.withSize(13)
+        nickNameLabel.font = .systemFont(ofSize: 13, weight: .regular)
         nickNameLabel.textColor = UIColor(named: "YP Gray")
         view.addSubview(nickNameLabel)
         
@@ -69,7 +69,7 @@ final class ProfileViewController: UIViewController {
     func setDescription() {
         descriptionLabel.text = "Hello, world!"
         descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
-        descriptionLabel.font.withSize(13)
+        descriptionLabel.font = .systemFont(ofSize: 13, weight: .regular)
         descriptionLabel.textColor = UIColor(named: "YP White")
         view.addSubview(descriptionLabel)
         

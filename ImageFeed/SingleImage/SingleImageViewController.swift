@@ -42,9 +42,9 @@ final class SingleImageViewController: UIViewController {
     
     @IBOutlet private var imageView: UIImageView!
     
-    @IBOutlet var scrollView: UIScrollView!
+    @IBOutlet private var scrollView: UIScrollView!
     
-    @IBAction func didTapShareButton(_ sender: UIButton) {
+    @IBAction private func didTapShareButton(_ sender: UIButton) {
         let uiActivityIndicator = UIActivityViewController(activityItems: [
              image
          ], applicationActivities: nil)
@@ -63,7 +63,7 @@ final class SingleImageViewController: UIViewController {
     }
     
 
-    @IBAction func didTapBackButton(_ sender: UIButton) {
+    @IBAction private func didTapBackButton(_ sender: UIButton) {
         dismiss(animated: true, completion: nil)
     }
     
