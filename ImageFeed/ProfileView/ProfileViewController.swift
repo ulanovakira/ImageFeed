@@ -57,7 +57,7 @@ final class ProfileViewController: UIViewController {
         nickNameLabel.text = "@ekaterina_nov"
         nickNameLabel.translatesAutoresizingMaskIntoConstraints = false
         nickNameLabel.font = .systemFont(ofSize: 13, weight: .regular)
-        nickNameLabel.textColor = UIColor(named: "YP Gray")
+        nickNameLabel.textColor = .lightGray
         view.addSubview(nickNameLabel)
         
         NSLayoutConstraint.activate([
