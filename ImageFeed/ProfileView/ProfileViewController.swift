@@ -19,6 +19,9 @@ final class ProfileViewController: UIViewController {
     var descriptionLabel: UILabel = UILabel()
     let exitButton: UIButton = UIButton(type: .custom)
     
+    let authTokenStorage = OAuth2TokenStorage()
+    let profileService = ProfileService.shared
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setProfileImage()
@@ -26,6 +29,7 @@ final class ProfileViewController: UIViewController {
         setNickNameLabel()
         setDescription()
         setButton()
+        self.fetchProfile(authTokenStorage.token)
     }
     
     func setProfileImage() {
@@ -90,6 +94,33 @@ final class ProfileViewController: UIViewController {
             exitButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
             exitButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 65)
         ])
+    }
+
+    
+    func fetchProfile(_ token: String?) {
+        guard let token = token else { return }
+        
+        profileService.fetchProfile(token) { [weak self] result in
+            guard let self = self else {return}
+            switch result {
+                case .success:
+                    do {
+                        let profile = try result.get()
+                        updateProfileInfo(profile: profile)
+                    } catch {
+                        print("Failed to get profile \(error)")
+                    }
+            case .failure:
+                print("Can not get profile info")
+                break
+            }
+        }
+    }
+    
+    func updateProfileInfo(profile: Profile?) {
+        nameLabel.text = profile?.name
+        nickNameLabel.text = profile?.loginName
+        descriptionLabel.text = profile?.bio
     }
     
     @objc private func didTapButton() {
