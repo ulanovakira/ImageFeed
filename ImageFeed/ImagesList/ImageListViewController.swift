@@ -31,6 +31,7 @@ class ImageListViewController: UIViewController, UITableViewDataSource {
     
     private let photosName: [String] = Array(0..<20).map{ "\($0)"}
     private let ShowSingleImageSegueIdentifier = "ShowSingleImage"
+    private let imageListService = ImageListService()
     
     private lazy var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -76,6 +77,12 @@ class ImageListViewController: UIViewController, UITableViewDataSource {
         
         configCell(for: imageListCell, with: indexPath)
         return imageListCell
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if indexPath.row + 1 == imageListService.photos.count {
+            imageListService.fetchPhotosNextPage()
+        }
     }
     
     func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
