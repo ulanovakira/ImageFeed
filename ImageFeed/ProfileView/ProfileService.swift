@@ -8,7 +8,7 @@
 import Foundation
 
 final class ProfileService {
-    private var profile: Profile?
+    private(set) var profile: Profile?
     private var task: URLSessionTask?
     static let shared = ProfileService()
     private let urlSession = URLSession.shared
@@ -27,7 +27,7 @@ final class ProfileService {
         
         guard let request = request else { return }
         
-        let task = object(for: request) { [weak self] result in
+        let task = urlSession.objectTask(for: request) { [weak self] (result:Result<ProfileResult, Error>) in
             DispatchQueue.main.async {
                 guard let self = self else { return }
                 switch result {
@@ -51,13 +51,13 @@ final class ProfileService {
     }
 }
 
-extension ProfileService {
-    func object(
-        for request: URLRequest,
-        completion: @escaping (Result<ProfileResult, Error>) -> Void
-    ) -> URLSessionTask {
-        let decoder = JSONDecoder()
-//        let a = urlSession.data(for: request) { (result: Result<Data, Error>) in
+//extension ProfileService {
+//    func object(
+//        for request: URLRequest,
+//        completion: @escaping (Result<ProfileResult, Error>) -> Void
+//    ) -> URLSessionTask {
+//        let decoder = JSONDecoder()
+//        return urlSession.data(for: request) { (result: Result<Data, Error>) in
 //            let response = result.flatMap { data -> Result<ProfileResult, Error> in
 //                Result {
 //                    try decoder.decode(ProfileResult.self, from: data)
@@ -65,13 +65,5 @@ extension ProfileService {
 //            }
 //            completion(response)
 //        }
-        return urlSession.data(for: request) { (result: Result<Data, Error>) in
-            let response = result.flatMap { data -> Result<ProfileResult, Error> in
-                Result {
-                    try decoder.decode(ProfileResult.self, from: data)
-                }
-            }
-            completion(response)
-        }
-    }
-}
+//    }
+//}

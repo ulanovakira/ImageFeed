@@ -7,13 +7,16 @@
 
 import Foundation
 import UIKit
+import Kingfisher
 
 final class ProfileViewController: UIViewController {
     private var label: UILabel?
+    private var profileImageServiceObserver: NSObjectProtocol?
+    
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
-    let imageView: UIImageView = UIImageView(image: UIImage(named: "profileImage"))
+    let imageView: UIImageView = UIImageView()
     var nameLabel: UILabel = UILabel()
     var nickNameLabel: UILabel = UILabel()
     var descriptionLabel: UILabel = UILabel()
@@ -21,6 +24,7 @@ final class ProfileViewController: UIViewController {
     
     let authTokenStorage = OAuth2TokenStorage()
     let profileService = ProfileService.shared
+    let profileImageService = ProfileImageService.shared
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,7 +33,7 @@ final class ProfileViewController: UIViewController {
         setNickNameLabel()
         setDescription()
         setButton()
-        self.fetchProfile(authTokenStorage.token)
+        updateProfileInfo(profile: profileService.profile)
     }
     
     func setProfileImage() {
@@ -97,30 +101,31 @@ final class ProfileViewController: UIViewController {
     }
 
     
-    func fetchProfile(_ token: String?) {
-        guard let token = token else { return }
+    func updateProfileInfo(profile: Profile?) {
+        guard let profile = profile else { return }
+        nameLabel.text = profile.name
+        nickNameLabel.text = profile.loginName
+        descriptionLabel.text = profile.bio
         
-        profileService.fetchProfile(token) { [weak self] result in
+        profileImageServiceObserver = NotificationCenter.default.addObserver(forName: ProfileImageService.DidChangeNotification, object: nil, queue: .main) { [weak self] _ in
             guard let self = self else {return}
-            switch result {
-                case .success:
-                    do {
-                        let profile = try result.get()
-                        updateProfileInfo(profile: profile)
-                    } catch {
-                        print("Failed to get profile \(error)")
-                    }
-            case .failure:
-                print("Can not get profile info")
-                break
-            }
+            self.updateAvatar()
         }
+        updateAvatar()
     }
     
-    func updateProfileInfo(profile: Profile?) {
-        nameLabel.text = profile?.name
-        nickNameLabel.text = profile?.loginName
-        descriptionLabel.text = profile?.bio
+    func updateAvatar() {
+        guard let avatarURL = profileImageService.avatarURL,
+              let url = URL(string: avatarURL)
+        else { return }
+        let cache = ImageCache.default
+        cache.clearMemoryCache()
+        cache.clearDiskCache()
+        let processor = RoundCornerImageProcessor(cornerRadius: 61)
+        let placeholder = UIImage(named: "profileImagePlaceholder")
+        imageView.kf.indicatorType = .activity
+        imageView.kf.setImage(with: url, placeholder: placeholder, options: [.processor(processor)])
+        
     }
     
     @objc private func didTapButton() {

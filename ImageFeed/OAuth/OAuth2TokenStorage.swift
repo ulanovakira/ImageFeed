@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import SwiftKeychainWrapper
 
 class OAuth2TokenStorage {
     private enum CodingKeys: String {
@@ -14,10 +15,10 @@ class OAuth2TokenStorage {
     }
     var token: String? {
         get {
-            UserDefaults.standard.string(forKey: CodingKeys.token.rawValue)
+            KeychainWrapper.standard.string(forKey: CodingKeys.token.rawValue)
         }
         set {
-            UserDefaults.standard.set(newValue, forKey: CodingKeys.token.rawValue)
+            KeychainWrapper.standard.set(newValue!, forKey: CodingKeys.token.rawValue)
         }
     }
 }

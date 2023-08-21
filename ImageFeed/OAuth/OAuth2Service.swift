@@ -30,7 +30,7 @@ final class OAuth2Service {
         lastCode = code
         
         let request = authTokenRequest(code: code)
-        let task = object(for: request) { [weak self] (result: Result<OAuthTokenResponseBody, Error>) in
+        let task = urlSession.objectTask(for: request) { [weak self] (result: Result<OAuthTokenResponseBody, Error>) in
             DispatchQueue.main.async {
                 guard let self = self else { return }
                 switch result {
@@ -53,20 +53,20 @@ final class OAuth2Service {
 }
 
 extension OAuth2Service {
-    private func object(
-        for request:URLRequest,
-        completion: @escaping (Result<OAuthTokenResponseBody, Error>) -> Void
-    ) -> URLSessionTask {
-        let decoder = JSONDecoder()
-        return urlSession.data(for: request) { (result: Result<Data, Error>) in
-            let response = result.flatMap { data -> Result<OAuthTokenResponseBody, Error> in
-                Result {
-                    try decoder.decode(OAuthTokenResponseBody.self, from: data)
-                }
-            }
-            completion(response)
-        }
-    }
+//    private func object(
+//        for request:URLRequest,
+//        completion: @escaping (Result<OAuthTokenResponseBody, Error>) -> Void
+//    ) -> URLSessionTask {
+//        let decoder = JSONDecoder()
+//        return urlSession.data(for: request) { (result: Result<Data, Error>) in
+//            let response = result.flatMap { data -> Result<OAuthTokenResponseBody, Error> in
+//                Result {
+//                    try decoder.decode(OAuthTokenResponseBody.self, from: data)
+//                }
+//            }
+//            completion(response)
+//        }
+//    }
     private func authTokenRequest(code: String) -> URLRequest {
         URLRequest.makeHTTPRequest(
             path: "/oauth/token"
@@ -78,11 +78,6 @@ extension OAuth2Service {
             httpMethod: "POST",
             baseURL: DefaultBaseURL
         )
-    }
-
-    
-    func profileImageURLRequest(username: String) -> URLRequest {
-        URLRequest.makeHTTPRequest(path: "/users\(username)", httpMethod: "GET")
     }
     
     func photosRequest(page: Int, perPage: Int) -> URLRequest {
