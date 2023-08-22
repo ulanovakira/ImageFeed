@@ -7,17 +7,24 @@
 
 import Foundation
 import UIKit
+import Kingfisher
 
 final class ProfileViewController: UIViewController {
     private var label: UILabel?
+    private var profileImageServiceObserver: NSObjectProtocol?
+    
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
-    let imageView: UIImageView = UIImageView(image: UIImage(named: "profileImage"))
+    let imageView: UIImageView = UIImageView()
     var nameLabel: UILabel = UILabel()
     var nickNameLabel: UILabel = UILabel()
     var descriptionLabel: UILabel = UILabel()
     let exitButton: UIButton = UIButton(type: .custom)
+    
+    let authTokenStorage = OAuth2TokenStorage()
+    let profileService = ProfileService.shared
+    let profileImageService = ProfileImageService.shared
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,6 +33,7 @@ final class ProfileViewController: UIViewController {
         setNickNameLabel()
         setDescription()
         setButton()
+        updateProfileInfo(profile: profileService.profile)
     }
     
     func setProfileImage() {
@@ -90,6 +98,34 @@ final class ProfileViewController: UIViewController {
             exitButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
             exitButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 65)
         ])
+    }
+
+    
+    func updateProfileInfo(profile: Profile?) {
+        guard let profile = profile else { return }
+        nameLabel.text = profile.name
+        nickNameLabel.text = profile.loginName
+        descriptionLabel.text = profile.bio
+        
+        profileImageServiceObserver = NotificationCenter.default.addObserver(forName: ProfileImageService.DidChangeNotification, object: nil, queue: .main) { [weak self] _ in
+            guard let self = self else {return}
+            self.updateAvatar()
+        }
+        updateAvatar()
+    }
+    
+    func updateAvatar() {
+        guard let avatarURL = profileImageService.avatarURL,
+              let url = URL(string: avatarURL)
+        else { return }
+        let cache = ImageCache.default
+        cache.clearMemoryCache()
+        cache.clearDiskCache()
+        let processor = RoundCornerImageProcessor(cornerRadius: 61)
+        let placeholder = UIImage(named: "profileImagePlaceholder")
+        imageView.kf.indicatorType = .activity
+        imageView.kf.setImage(with: url, placeholder: placeholder, options: [.processor(processor)])
+        
     }
     
     @objc private func didTapButton() {
