@@ -44,29 +44,13 @@ final class OAuth2Service {
                         self.lastCode = nil
                 }
             }
-            
         }
         self.task = task
         task.resume()
     }
-    
 }
 
 extension OAuth2Service {
-//    private func object(
-//        for request:URLRequest,
-//        completion: @escaping (Result<OAuthTokenResponseBody, Error>) -> Void
-//    ) -> URLSessionTask {
-//        let decoder = JSONDecoder()
-//        return urlSession.data(for: request) { (result: Result<Data, Error>) in
-//            let response = result.flatMap { data -> Result<OAuthTokenResponseBody, Error> in
-//                Result {
-//                    try decoder.decode(OAuthTokenResponseBody.self, from: data)
-//                }
-//            }
-//            completion(response)
-//        }
-//    }
     private func authTokenRequest(code: String) -> URLRequest {
         URLRequest.makeHTTPRequest(
             path: "/oauth/token"
@@ -79,8 +63,6 @@ extension OAuth2Service {
             baseURL: DefaultBaseURL
         )
     }
-    
-
     
     func likeRequest(photoId: String) -> URLRequest {
         URLRequest.makeHTTPRequest(path: "/photos/\(photoId)/like", httpMethod: "POST")

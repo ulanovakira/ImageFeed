@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 import SwiftKeychainWrapper
+import WebKit
 
 class OAuth2TokenStorage {
     private enum CodingKeys: String {
@@ -20,5 +21,18 @@ class OAuth2TokenStorage {
         set {
             KeychainWrapper.standard.set(newValue!, forKey: CodingKeys.token.rawValue)
         }
+    }
+    
+    static func clean() {
+        HTTPCookieStorage.shared.removeCookies(since: Date.distantPast)
+        WKWebsiteDataStore.default().fetchDataRecords(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes()) { resords in
+            resords.forEach{ record in
+                WKWebsiteDataStore.default().removeData(ofTypes: record.dataTypes, for: [record], completionHandler: {})
+            }
+        }
+    }
+    
+    static func removeToken() {
+        KeychainWrapper.standard.removeObject(forKey: CodingKeys.token.rawValue)
     }
 }

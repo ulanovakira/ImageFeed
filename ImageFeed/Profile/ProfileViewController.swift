@@ -28,6 +28,7 @@ final class ProfileViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = UIColor(named: "YP Black")
         setProfileImage()
         setName()
         setNickNameLabel()
@@ -128,11 +129,29 @@ final class ProfileViewController: UIViewController {
         
     }
     
+    private func showAlert() {
+        let alert = UIAlertController(
+            title: "Пока, пока!",
+            message: "Уверены, что хотите выйти?",
+            preferredStyle: .alert)
+        
+        alert.addAction(UIAlertAction(
+            title: "Да",
+            style: .cancel,
+        handler: { [weak self] _ in
+            guard let self = self else { return }
+            OAuth2TokenStorage.clean()
+            OAuth2TokenStorage.removeToken()
+            guard let window = UIApplication.shared.windows.first else { return }
+            window.rootViewController = SplashViewController()
+            
+        }))
+        alert.addAction(UIAlertAction(title: "Не надо", style: .default))
+        
+        present(alert, animated: true, completion: nil)
+    }
+    
     @objc private func didTapButton() {
-          for view in view.subviews {
-              if view is UILabel {
-                  view.removeFromSuperview()
-              }
-          }
+          showAlert()
       }
 }

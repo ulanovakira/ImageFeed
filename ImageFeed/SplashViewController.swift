@@ -95,20 +95,16 @@ extension SplashViewController {
     }
     
     private func showAlert() {
-        let alert = AlertModel(
+        let alert = UIAlertController(
             title: "Что-то пошло не так(",
             message: "Не удалось войти в систему",
-            buttonText: "Ок",
-            completion: { [weak self] _ in
-                guard let self = self else { return }
-            }
-        )
-        AlertPresenter().showAlert(alert)
+            preferredStyle: .alert)
+        
+        alert.addAction(UIAlertAction(
+            title: "ОК",
+            style: .default))
+        
+        present(alert, animated: true, completion: nil)
     }
 }
 
-extension SplashViewController: AlertPresenterDelegate {
-    func present(_ alert: UIAlertController, animated flag: Bool) {
-        self.present(alert, animated: flag)
-    }
-}
