@@ -22,7 +22,7 @@ final class ImageListService {
     
     func fetchPhotosNextPage() {
         assert(Thread.isMainThread)
-        task?.cancel()
+        if task != nil { return }
         
         var request = photosRequest(page: lastLoadedPage)
         request?.addValue("Bearer \(token!)", forHTTPHeaderField: "Authorization")
@@ -43,6 +43,7 @@ final class ImageListService {
                     print("Failed to get photos \(error)")
                     break
                 }
+            self.task = nil
         }
         self.task = task
         task.resume()

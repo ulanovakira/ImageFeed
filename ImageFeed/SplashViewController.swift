@@ -16,9 +16,8 @@ final class SplashViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
         if OAuth2TokenStorage().token != nil {
-            self.fetchProfile(token: OAuth2TokenStorage().token!)
+            fetchProfile(token: OAuth2TokenStorage().token!)
         } else {
             switchToAuthViewController()
         }

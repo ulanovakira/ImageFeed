@@ -69,8 +69,6 @@ class ImageListViewController: UIViewController, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        print("indexPath row \(indexPath.row + 1)")
-        print("photos count \(tableView.numberOfRows(inSection: 0))")
         if indexPath.row + 1 == tableView.numberOfRows(inSection: 0) {
             imageListService.fetchPhotosNextPage()
         }

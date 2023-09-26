@@ -142,13 +142,14 @@ final class ProfileViewController: UIViewController {
             guard let self = self else { return }
             OAuth2TokenStorage.clean()
             OAuth2TokenStorage.removeToken()
-            guard let window = UIApplication.shared.windows.first else { return }
-            window.rootViewController = SplashViewController()
             
+            guard let window = UIApplication.shared.windows.first else { fatalError("Invalid Configuration") }
+            let splashViewController = SplashViewController()
+            window.rootViewController = splashViewController
         }))
         alert.addAction(UIAlertAction(title: "Не надо", style: .default))
         
-        present(alert, animated: true, completion: nil)
+        self.present(alert, animated: true, completion: nil)
     }
     
     @objc private func didTapButton() {
