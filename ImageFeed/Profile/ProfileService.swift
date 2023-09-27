@@ -19,7 +19,7 @@ final class ProfileService {
     
     func fetchProfile(_ token: String, completion: @escaping (Result<Profile, Error>) -> Void) {
         assert(Thread.isMainThread)
-        if profile != nil { return }
+        
         task?.cancel()
         
         var request = selfProfileRequest
@@ -50,20 +50,3 @@ final class ProfileService {
         
     }
 }
-
-//extension ProfileService {
-//    func object(
-//        for request: URLRequest,
-//        completion: @escaping (Result<ProfileResult, Error>) -> Void
-//    ) -> URLSessionTask {
-//        let decoder = JSONDecoder()
-//        return urlSession.data(for: request) { (result: Result<Data, Error>) in
-//            let response = result.flatMap { data -> Result<ProfileResult, Error> in
-//                Result {
-//                    try decoder.decode(ProfileResult.self, from: data)
-//                }
-//            }
-//            completion(response)
-//        }
-//    }
-//}

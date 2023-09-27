@@ -16,9 +16,8 @@ final class SplashViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
         if OAuth2TokenStorage().token != nil {
-            self.fetchProfile(token: OAuth2TokenStorage().token!)
+            fetchProfile(token: OAuth2TokenStorage().token!)
         } else {
             switchToAuthViewController()
         }
@@ -95,20 +94,16 @@ extension SplashViewController {
     }
     
     private func showAlert() {
-        let alert = AlertModel(
+        let alert = UIAlertController(
             title: "Что-то пошло не так(",
             message: "Не удалось войти в систему",
-            buttonText: "Ок",
-            completion: { [weak self] _ in
-                guard let self = self else { return }
-            }
-        )
-        AlertPresenter().showAlert(alert)
+            preferredStyle: .alert)
+        
+        alert.addAction(UIAlertAction(
+            title: "ОК",
+            style: .default))
+        
+        present(alert, animated: true, completion: nil)
     }
 }
 
-extension SplashViewController: AlertPresenterDelegate {
-    func present(_ alert: UIAlertController, animated flag: Bool) {
-        self.present(alert, animated: flag)
-    }
-}
