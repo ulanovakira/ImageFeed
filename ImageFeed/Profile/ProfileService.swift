@@ -14,7 +14,7 @@ final class ProfileService {
     private let urlSession = URLSession.shared
     
     var selfProfileRequest: URLRequest? {
-        URLRequest.makeHTTPRequest(path: "/me", httpMethod: "GET", baseURL: apiBaseURL)
+        URLRequest.makeHTTPRequest(path: "/me", httpMethod: "GET", baseURL: URL(string: "https://api.unsplash.com")!)
     }
     
     func fetchProfile(_ token: String, completion: @escaping (Result<Profile, Error>) -> Void) {
