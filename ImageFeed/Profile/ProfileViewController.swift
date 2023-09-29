@@ -9,7 +9,14 @@ import Foundation
 import UIKit
 import Kingfisher
 
-final class ProfileViewController: UIViewController {
+public protocol ProfileViewControllerProtocol: AnyObject {
+    var presenter: ProfilePresenterProtocol? { get set }
+    func updateAvatar()
+}
+
+final class ProfileViewController: UIViewController & ProfileViewControllerProtocol  {
+    var presenter: ProfilePresenterProtocol?
+    
     private var label: UILabel?
     private var profileImageServiceObserver: NSObjectProtocol?
     
@@ -93,6 +100,7 @@ final class ProfileViewController: UIViewController {
         exitButton.tintColor = .red
         exitButton.translatesAutoresizingMaskIntoConstraints = false
         exitButton.addTarget(self, action: #selector(self.didTapButton), for: .touchUpInside)
+        exitButton.accessibilityIdentifier = "logoutButton"
         view.addSubview(exitButton)
         
         NSLayoutConstraint.activate([
@@ -108,20 +116,23 @@ final class ProfileViewController: UIViewController {
         nickNameLabel.text = profile.loginName
         descriptionLabel.text = profile.bio
         
-        profileImageServiceObserver = NotificationCenter.default.addObserver(forName: ProfileImageService.DidChangeNotification, object: nil, queue: .main) { [weak self] _ in
-            guard let self = self else {return}
-            self.updateAvatar()
-        }
-        updateAvatar()
+        let profilePresenter = ProfilePresenter()
+        print("profilePresenter \(profilePresenter)")
+        self.presenter = profilePresenter
+        profilePresenter.view = self
+        profilePresenter.observeNotifications()
+//        profileImageServiceObserver = NotificationCenter.default.addObserver(forName: ProfileImageService.DidChangeNotification, object: nil, queue: .main) { [weak self] _ in
+//            guard let self = self else {return}
+//            self.updateAvatar()
+//        }
+//        updateAvatar()
     }
     
     func updateAvatar() {
         guard let avatarURL = profileImageService.avatarURL,
               let url = URL(string: avatarURL)
         else { return }
-        let cache = ImageCache.default
-        cache.clearMemoryCache()
-        cache.clearDiskCache()
+        
         let processor = RoundCornerImageProcessor(cornerRadius: 61)
         let placeholder = UIImage(named: "profileImagePlaceholder")
         imageView.kf.indicatorType = .activity

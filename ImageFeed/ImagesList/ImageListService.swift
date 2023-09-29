@@ -11,7 +11,7 @@ final class ImageListService {
     static let shared = ImageListService()
     private(set) var photos: [Photo] = []
     private var lastLoadedPage: Int =  1
-    static let DidChangeNotification = Notification.Name(rawValue: "ImageListServiceDidChange")
+    static let didChangeNotification = Notification.Name(rawValue: "ImageListServiceDidChange")
     private var task: URLSessionTask?
     private let urlSession = URLSession.shared
     let token = OAuth2TokenStorage().token
@@ -37,7 +37,7 @@ final class ImageListService {
                         self.photos.append(Photo(result: photo))
                     }
                     NotificationCenter.default.post(
-                        name: ImageListService.DidChangeNotification, object: self)
+                        name: ImageListService.didChangeNotification, object: self)
                     self.lastLoadedPage += 1
                 case .failure(let error):
                     print("Failed to get photos \(error)")

@@ -8,7 +8,14 @@
 import UIKit
 import Kingfisher
 
-class ImageListViewController: UIViewController, UITableViewDataSource {
+public protocol ImageListViewControllerProtocol: AnyObject {
+    var presenter: ImageListPresenterProtocol? { get set }
+    func updateTableViewAnimated()
+}
+
+class ImageListViewController: UIViewController, ImageListViewControllerProtocol, UITableViewDataSource {
+    var presenter: ImageListPresenterProtocol?
+    
     @IBOutlet private var tableView: UITableView!
     
     private let ShowSingleImageSegueIdentifier = "ShowSingleImage"
@@ -29,14 +36,19 @@ class ImageListViewController: UIViewController, UITableViewDataSource {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
-        imageListServiceObserver = NotificationCenter.default.addObserver(forName:ImageListService.DidChangeNotification, object: nil, queue: .main) { [weak self] _ in
-            self?.updateTableViewAnimated()
-        }
-        imageListService.fetchPhotosNextPage()
+//        view.addSubview(tableView)
         tableView.dataSource = self
         tableView.delegate = self
+        tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
+//        imageListServiceObserver = NotificationCenter.default.addObserver(forName:ImageListService.didChangeNotification, object: nil, queue: .main) { [weak self] _ in
+//            self?.updateTableViewAnimated()
+//        }
+        let imageListPresenter = ImageListPresenter()
+        print("imageListPresenter \(imageListPresenter)")
+        self.presenter = imageListPresenter
+        imageListPresenter.view = self
+        imageListService.fetchPhotosNextPage()
+        imageListPresenter.observeNotifications()
         
     }
     
