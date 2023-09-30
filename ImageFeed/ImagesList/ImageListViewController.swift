@@ -16,7 +16,7 @@ public protocol ImageListViewControllerProtocol: AnyObject {
 class ImageListViewController: UIViewController, ImageListViewControllerProtocol, UITableViewDataSource {
     var presenter: ImageListPresenterProtocol?
     
-    @IBOutlet private var tableView: UITableView!
+    @IBOutlet private var tableView: UITableView?
     
     private let ShowSingleImageSegueIdentifier = "ShowSingleImage"
     private let imageListService = ImageListService.shared
@@ -37,9 +37,9 @@ class ImageListViewController: UIViewController, ImageListViewControllerProtocol
     override func viewDidLoad() {
         super.viewDidLoad()
 //        view.addSubview(tableView)
-        tableView.dataSource = self
-        tableView.delegate = self
-        tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
+        tableView?.dataSource = self
+        tableView?.delegate = self
+        tableView?.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
 //        imageListServiceObserver = NotificationCenter.default.addObserver(forName:ImageListService.didChangeNotification, object: nil, queue: .main) { [weak self] _ in
 //            self?.updateTableViewAnimated()
 //        }
@@ -93,7 +93,7 @@ class ImageListViewController: UIViewController, ImageListViewControllerProtocol
                 cell.cellImage.kf.setImage(with: imageURL,
                                            placeholder: UIImage(named: "stub")) { [weak self] _ in
                     guard let self = self else { return }
-                    self.tableView.reloadRows(at: [indexPath], with: .automatic)
+                    self.tableView?.reloadRows(at: [indexPath], with: .automatic)
                 }
             if let date = photos[indexPath.row].createdAt {
                 cell.dateLabel.text = dateFormatter.string(from: date)
@@ -112,11 +112,11 @@ class ImageListViewController: UIViewController, ImageListViewControllerProtocol
         let newCount = imageListService.photos.count
         photos = imageListService.photos
         if oldCount != newCount {
-            tableView.performBatchUpdates {
+            tableView?.performBatchUpdates {
                 let indexPaths = (oldCount..<newCount).map { i in
                     IndexPath(row: i, section: 0)
                 }
-                tableView.insertRows(at: indexPaths, with: .automatic)
+                tableView?.insertRows(at: indexPaths, with: .automatic)
             } completion: { _ in }
         }
     }
@@ -125,7 +125,7 @@ class ImageListViewController: UIViewController, ImageListViewControllerProtocol
 
 extension ImageListViewController: ImagesListCellDelegate {
     func imageListCellDidTapLike(_ cell: ImagesListCell) {
-        guard let indexPath = tableView.indexPath(for: cell) else { return }
+        guard let indexPath = tableView?.indexPath(for: cell) else { return }
         let photo = photos[indexPath.row]
         UIBlockingProgressHUD.show()
         imageListService.changeLike(photoId: photo.id, isLike: !photo.isLiked) { [weak self] result in
@@ -134,7 +134,7 @@ extension ImageListViewController: ImagesListCellDelegate {
             case .success:
                 self.photos = self.imageListService.photos
                 cell.setIsLiked(isLiked: self.photos[indexPath.row].isLiked)
-                self.tableView.reloadRows(at: [indexPath], with: .automatic)
+                self.tableView?.reloadRows(at: [indexPath], with: .automatic)
                 UIBlockingProgressHUD.dismiss()
             case .failure:
                 UIBlockingProgressHUD.dismiss()
