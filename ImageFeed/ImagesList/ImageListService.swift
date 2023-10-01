@@ -25,7 +25,8 @@ final class ImageListService {
         if task != nil { return }
         
         var request = photosRequest(page: lastLoadedPage)
-        request?.addValue("Bearer \(token!)", forHTTPHeaderField: "Authorization")
+        guard let token = token else { return }
+        request?.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         
         guard let request = request else { return }
         let task = urlSession.objectTask(for: request) { [weak self] (result: Result<[PhotoResult], Error>) in
